@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="lost-items-container">
+    <div class="page-header" style="width: 100%;">
+        <h2 class="section-title">Pending Claim Requests</h2>
+    </div>
+    <hr class="divider" style="width: 100%;">
+
+    {% if pending_requests %}
+        {% for req in pending_requests %}
+            <div class="item-card">
+                <div class="item-details">
+                    <h3 class="item-name">{{ req.get_item_name }} <span class="status-badge status-open">{{ req.item_type|upper }}</span></h3>
+                    <p class="item-meta"><strong>Requested by:</strong> {{ req.requester.username }} (ID: {{ req.requester.id_number }})</p>
+                    <p class="item-meta"><strong>Date Requested:</strong> {{ req.created_at|date:"M d, Y H:i" }}</p>
+                    <div style="background: #f8f9fa; padding: 10px; border-radius: 6px; margin: 10px 0;">
+                        <strong>User's Reason:</strong><br>
+                        {{ req.reason|linebreaksbr }}
+                    </div>
+
+                    <form method="post" action="{% url 'process_claim_request' req.id 'approve' %}" style="display:inline;">
+                        {% csrf_token %}
+                        <input type="text" name="manager_note" placeholder="Optional note for approval" class="form-input" style="margin-bottom: 10px; width: 100%;">
+                        <button type="submit" class="action-btn submit-btn" onclick="return confirm('Approve this claim? This will mark the item as CLAIMED.')">Approve Request</button>
+                    </form>
+
+                    <form method="post" action="{% url 'process_claim_request' req.id 'decline' %}" style="display:inline; margin-top: 10px;">
+                        {% csrf_token %}
+                        <input type="text" name="manager_note" placeholder="Reason for declining (sent to user)" required class="form-input" style="margin-bottom: 10px; width: 100%;">
+                        <button type="submit" class="action-btn cancel-btn" style="background-color: #e53e3e; color: white;">Decline Request</button>
+                    </form>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p class="empty-message" style="width: 100%;">No pending requests.</p>
+    {% endif %}
+</div>
+{% endblock %}

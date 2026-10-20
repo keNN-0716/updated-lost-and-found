@@ -1,0 +1,75 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <title>Lost and Found</title>
+</head>
+<body>
+    <nav class="side-menu" id="sideMenu">
+        <button class="close-menu" id="closeMenu">✖ Close</button>
+        <ul>
+            <h4>Navigation</h4>
+            
+            <!-- Dynamic Home Link -->
+            {% if user.is_staff or user.role == 'Management' %}
+                <li><a href="{% url 'lost_and_found' %}">Management Home</a></li>
+                <li><a href="{% url 'management_requests' %}">Claim Requests</a></li>
+            {% else %}
+                <li><a href="{% url 'user_home_page' %}">My Home</a></li>
+            {% endif %}
+            
+            <li><a href="{% url 'lost_items' %}">Lost Items</a></li>
+            <li><a href="{% url 'found_items' %}">Found Items</a></li>
+            
+            <!-- Logout Button properly wrapped in an <li> -->
+            <li style="margin-top: 50px;">
+                <form action="{% url 'logout' %}" method="POST" style="display: block; width: 100%;">
+                    {% csrf_token %}
+                    <button type="submit" class="logout-btn" style="width: 100%; padding: 10px; cursor: pointer; background: #e53e3e; color: white; border: none; border-radius: 4px;">
+                        Log Out
+                    </button>
+                </form>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="header">
+        <button class="menu-toggle" id="menuToggle">☰ Menu</button>
+        <h2>Lost and Found Management System</h2>
+    </div>
+
+    {% if messages %}
+        <ul class="messages-list">
+            {% for message in messages %}
+                <li class="message-item message-{{ message.tags }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Lost and Found Management System</p>
+    </footer>
+
+    <!-- NEW: toast container for real-time notifications -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <script>
+        // NEW: expose Express URL to the static JS file
+        window.EXPRESS_URL = "{{ EXPRESS_URL|default:'http://localhost:3000' }}";
+    </script>
+    <script src="{% static 'js/script.js' %}"></script>
+
+    {% if user.is_authenticated %}
+        <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+        <script src="{% static 'js/notifications.js' %}"></script>
+    {% endif %}
+</body>
+</html>

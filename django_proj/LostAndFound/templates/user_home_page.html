@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="lost-items-container">
+    <div class="page-header" style="width: 100%;">
+        <h2 class="section-title">Welcome, {{ user.username }}!</h2>
+
+        <div class="search-container">
+            <form action="{% url 'search_results' %}" method="get">
+                <input type="text" name="q" placeholder="Search items...">
+                <button type="submit" class="action-btn upload-trigger-btn">Search</button>
+            </form>
+        </div>
+    </div>
+    <hr class="divider" style="width: 100%; margin-bottom: 20px;">
+
+    <h3 style="width: 100%; text-align: left; margin-top: 30px;">My Claim Requests</h3>
+    
+    {% if my_claims %}
+        {% for req in my_claims %}
+            <div class="item-card">
+                <div class="item-details">
+                    <h3 class="item-name">{{ req.get_item_name }} <small>({{ req.item_type|upper }})</small></h3>
+                    
+                    <!-- Show the status with a colored badge -->
+                    <span class="status-badge {% if req.status == 'Approved' %}status-resolved{% elif req.status == 'Declined' %}status-open{% else %}status-claimed{% endif %}">
+                        {{ req.status }}
+                    </span>
+                    
+                    <p class="item-meta"><strong>Requested on:</strong> {{ req.created_at|date:"M d, Y H:i" }}</p>
+                    <p class="item-meta"><strong>Your Reason:</strong> {{ req.reason }}</p>
+                    
+                    {% if req.status == 'Approved' %}
+                        <div style="background: #f0fff4; border-left: 4px solid #38a169; padding: 10px; margin-top: 10px; display: flex; align-items: center; justify-content: space-between;">
+                            <div>
+                                <p style="color: #276749; margin: 0;"><strong>Approved!</strong> Please show this QR code to management to claim your item.</p>
+                                {% if req.manager_note %}<p style="color: #276749; margin: 5px 0 0 0;"><em>Note: {{ req.manager_note }}</em></p>{% endif %}
+                            </div>
+                            <!-- Display the QR Code -->
+                            <div style="text-align: center; background: white; padding: 5px; border-radius: 8px; border: 1px solid #c6f6d5;">
+                                <img src="{% url 'claim_qr_code' req.id %}" alt="Claim QR Code" style="width: 80px; height: 80px; display: block;">
+                                <span style="font-size: 10px; color: #38a169; font-weight: bold;">SCAN ME</span>
+                            </div>
+                        </div>
+                    {% elif req.status == 'Declined' %}
+                        <div style="background: #fff5f5; border-left: 4px solid #e53e3e; padding: 10px; margin-top: 10px;">
+                            <p style="color: #c53030; margin: 0;"><strong>Declined</strong></p>
+                            {% if req.manager_note %}<p style="color: #c53030; margin: 5px 0 0 0;"><em>Reason: {{ req.manager_note }}</em></p>{% endif %}
+                        </div>
+                    {% else %}
+                        <div style="background: #fffaf0; border-left: 4px solid #ed8936; padding: 10px; margin-top: 10px;">
+                            <p style="color: #c05621; margin: 0;">Awaiting management review...</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p class="empty-message" style="width: 100%;">You haven't requested to claim any items yet.</p>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,519 @@
+/* Default Styles */
+body {
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 10px;
+    padding: 5px;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding-bottom: 80px;
+}
+/* Hidden Menu by Default */
+.hidden {
+    display: none !important;
+}
+/* Header Styles */
+.header {
+    background-color: #dddddd;
+    padding: 20px;
+    border-radius: 25px;
+    margin-bottom: 20px;
+}
+/* Menu Toggle Button */
+.menu-toggle {
+    position: fixed;
+    top: 30px;
+    left: 25px;
+    background-color: #dddddd;
+    border: none;
+    padding: 10px 15px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    z-index: 1001; /* Ensure it is above the side menu */
+}
+/* Close Menu Button */
+.close-menu {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #c8c8c8;
+    border: none;
+    padding: 5px 10px;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+/* Left-Side Navigation */
+.side-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #dddddd;
+    padding: 10px;
+    width: 200px;
+    height: 90vh; /* Full height */
+    margin-bottom: 20px;
+    float: left; /* Align to the left */
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out; 
+    z-index: 1000;
+}
+/* Clean custom styling for the logout action button */
+    .logout-btn {
+        background-color: #e74c3c;
+        color: white;
+        border: none;
+        padding: 8px 15px;
+        font-size: 14px;
+        font-weight: bold;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+    .logout-btn:hover {
+        background-color: #c0392b;
+    }
+/* Open State for Side Menu */
+.side-menu.open {
+    transform: translateX(0);
+}
+/* Navigation List */
+.side-menu ul {
+    list-style-type: none;
+    padding: 10px;
+}
+/* Navigation Links */
+.side-menu ul li a {
+    display: block;
+    margin-bottom: 15px;
+    text-decoration: none;
+    color: #333;
+    background-color: #c5c5c5;
+    border-radius: 25px;
+    padding: 25px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+/* Navigation Links Hover Effect */
+.side-menu ul li a:hover {
+    background-color: #999999;
+    transform: scale(1.10);
+}
+/* Container & Layout */
+.lost-items-container {
+    display: flex;
+    flex-wrap: wrap;      
+    gap: 20px;              
+    justify-content: center;
+}
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+/* Modal Overlay Layer (Covers entire screen) */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    z-index: 1000; 
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+}
+
+/* The Modal Dialog Container Box */
+.modal-content {
+    background-color: #ffffff;
+    padding: 25px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 550px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Modal Internal Sections */
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #dee2e6;
+    padding-bottom: 10px;
+}
+
+.modal-title {
+    margin: 0;
+    color: #333333;
+    font-size: 1.4rem;
+}
+
+.close-x {
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.close-x:hover {
+    color: #333;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+    border-top: 1px solid #dee2e6;
+    padding-top: 15px;
+}
+
+/* Reusable Button States */
+.action-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.upload-trigger-btn {
+    background-color: #007bff;
+    color: white;
+}
+
+.upload-trigger-btn:hover {
+    background-color: #0056b3;
+}
+
+.submit-btn {
+    background-color: #28a745;
+    color: white;
+}
+
+.submit-btn:hover {
+    background-color: #218838;
+}
+
+.cancel-btn {
+    background-color: #6c757d;
+    color: white;
+}
+
+.cancel-btn:hover {
+    background-color: #5a6268;
+}
+
+/* Standard Form Fields Styles */
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #495057;
+}
+
+.form-input, 
+.form-textarea {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+/* Item List Grid UI */
+.section-title {
+    color: #212529;
+    align-items: center;
+}
+
+.divider {
+    border: 0;
+    border-top: 1px solid #dee2e6;
+    margin-bottom: 20px;
+}
+
+.item-preview-img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 4px;
+    margin-right: 0 !important;
+    margin-bottom: 12px;       
+}
+
+.item-card {
+    background-color: #ffffff;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 15px;
+    width: 260px;          
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column; 
+    text-align: left;       
+    box-sizing: border-box;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.item-name {
+    margin: 0 0 8px 0;
+    color: #007bff;
+}
+
+.item-desc, .item-meta {
+    margin: 5px 0;
+}
+
+.item-meta {
+    font-size: 0.9rem;
+    color: #6c757d;
+}
+
+.empty-message {
+    text-align: center;
+    color: #6c757d;
+    font-style: italic;
+}
+
+/* Footer Styles */
+footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #dddddd;
+    padding: 10px;
+    text-align: center;
+}
+
+/* Search Layout & Form Elements */
+.search-container {
+    margin: 15px auto;
+    padding: 5px;
+    max-width: 600px;
+}
+
+.search-container form {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    align-items: center;
+}
+
+.search-container input[type="text"] {
+    flex: 1;
+    padding: 10px 15px;
+    font-size: 1rem;
+    border: 1px solid #ced4da;
+    border-radius: 25px; /* Matches your layout template curve styles */
+    outline: none;
+    box-sizing: border-box;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.search-container input[type="text"]:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.25);
+}
+
+.search-container button[type="submit"] {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+.search-container button[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+.search-container button[type="submit"]:active {
+    transform: scale(0.98);
+}
+
+/* Search Results Page UI Card Grid */
+.search-results-list {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 0 15px;
+    text-align: left; /* Align card content text to the left for better reading */
+}
+
+.search-item-card {
+    background-color: #ffffff;
+    border: 1px solid #e1e4e8;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.search-item-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.search-item-card h3 {
+    margin: 0;
+    color: #007bff;
+    font-size: 1.3rem;
+}
+
+.search-item-card img {
+    max-width: 200px;
+    max-height: 150px;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 1px solid #dee2e6;
+    margin-bottom: 10px;
+}
+
+.search-item-card p {
+    margin: 4px 0;
+    color: #333333;
+    line-height: 1.5;
+}
+
+.search-item-card small {
+    display: inline-block;
+    color: #6c757d;
+    background-color: #f8f9fa;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    margin-top: 4px;
+}
+
+/* Status badges for item lifecycle (Open / Claimed / Resolved) */
+.status-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+.status-open {
+    background-color: #fff3cd;
+    color: #856404;
+}
+.status-claimed {
+    background-color: #cce5ff;
+    color: #004085;
+}
+.status-resolved {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+/* Django messages feedback banners */
+.messages-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 15px 0;
+}
+.message-item {
+    padding: 10px 15px;
+    border-radius: 5px;
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+}
+.message-success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+.message-error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+/* Inline form validation errors inside the upload modals */
+.form-error {
+    color: #e74c3c;
+    font-size: 0.8rem;
+    display: block;
+    margin-top: 4px;
+}
+.form-input, .form-textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+/* ── Real-time toast notifications ─────────────────────── */
+.toast-container {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 360px;
+    pointer-events: none;
+}
+
+.toast {
+    background: #fff;
+    border-left: 4px solid #3182ce;
+    padding: 12px 16px;
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    animation: toast-in 0.3s ease-out;
+    font-size: 14px;
+    color: #2d3748;
+    pointer-events: auto;
+}
+
+.toast strong { display: block; margin-bottom: 4px; color: #1a202c; }
+.toast p { margin: 0; color: #4a5568; font-size: 13px; }
+
+.toast-info    { border-left-color: #3182ce; }
+.toast-warning { border-left-color: #ed8936; }
+.toast-success { border-left-color: #38a169; }
+.toast-error   { border-left-color: #e53e3e; }
+
+.toast-hide {
+    opacity: 0;
+    transform: translateX(30px);
+    transition: opacity 0.3s, transform 0.3s;
+}
+
+@keyframes toast-in {
+    from { opacity: 0; transform: translateX(30px); }
+    to   { opacity: 1; transform: translateX(0); }
+}

@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="lost-items-container">
+    <div class="page-header" style="width: 100%;">
+        <h2 class="section-title">Search Results for: "{{ query }}"</h2>
+        
+        <div class="search-container">
+            <form action="{% url 'search_results' %}" method="get">
+                <input type="text" name="q" value="{{ query|default:'' }}" placeholder="Search lost items...">
+                <button type="submit" class="action-btn upload-trigger-btn">Search</button>
+            </form>
+        </div>
+    </div>
+    <hr class="divider" style="width: 100%;">
+
+    {% if results %}
+        {% for item in results %}
+            <div class="item-card">
+                {% if item.image %}
+                    <img src="{{ item.image.url }}" alt="{{ item.name }}" class="item-preview-img">
+                {% endif %}
+                
+                <div class="item-details">
+                    <h3 class="item-name">{{ item.name }}</h3>
+                    
+                    <span class="status-badge status-{{ item.status|lower }}">{{ item.status }}</span>
+                    
+                    <p class="item-desc"><strong>Description:</strong> {{ item.description }}</p>
+                    <p class="item-meta"><strong>Location:</strong> {{ item.location_lost }}</p>
+                    {% if item.date_lost %}
+                        <p class="item-meta"><strong>Date Lost:</strong> {{ item.date_lost }}</p>
+                    {% endif %}
+                    
+                    {% if item.claimed_by %}
+                        <p class="item-meta"><strong>Claimed by:</strong> {{ item.claimed_by.username }}</p>
+                    {% endif %}
+
+                    <!-- Claim button for normal users if the item is Open -->
+                    {% if item.status == 'Open' and not is_management %}
+                        <button type="button" class="action-btn submit-btn" onclick="openClaimModal('{{ item.item_id }}', '{{ item.name|escapejs }}', 'lost')">
+                            Claim Item
+                        </button>
+                    {% endif %}
+
+                    <!-- Resolve button for managers -->
+                    {% if is_management and item.status != 'Resolved' %}
+                        <form method="post" action="{% url 'resolve_item' 'lost' item.item_id %}" style="display:inline; margin-top: 10px;">
+                            {% csrf_token %}
+                            <button type="submit" class="action-btn" style="background-color: #38a169; color: white;" onclick="return confirm('Mark this item as returned and move it to the Found Items page?')">
+                                Mark as Resolved
+                            </button>
+                        </form>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p class="empty-message" style="width: 100%;">No results found matching your criteria.</p>
+    {% endif %}
+</div>
+
+<!-- Claim Request Modal -->
+<div id="claimModal" class="modal-overlay" style="display:none;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 class="modal-title">Claim Item: <span id="claimItemName"></span></h3>
+            <span class="close-x" onclick="document.getElementById('claimModal').style.display='none'">&times;</span>
+        </div>
+        <form id="claimForm" method="post" action="">
+            {% csrf_token %}
+            <div class="form-group">
+                <label class="form-label">Why does this belong to you? *</label>
+                <textarea name="reason" class="form-textarea" rows="4" required placeholder="Provide proof of ownership, descriptions, or details only the owner would know..."></textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="action-btn cancel-btn" onclick="document.getElementById('claimModal').style.display='none'">Cancel</button>
+                <button type="submit" class="action-btn submit-btn">Submit Request</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+function openClaimModal(id, name, type) {
+    document.getElementById('claimItemName').innerText = name;
+    document.getElementById('claimForm').action = `/claim_request/${type}/${id}/`;
+    document.getElementById('claimModal').style.display = 'flex';
+}
+</script>
+{% endblock %}
